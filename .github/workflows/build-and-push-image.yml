@@ -14,12 +14,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # - name: Create Github Release
-      #   uses: rymndhng/release-on-push-action@master
-      #   id: release
-      #   with:
-      #     bump_version_scheme: patch
-      #     use_github_release_notes: true
+      - name: Create Github Release
+        id: release
+        uses: rymndhng/release-on-push-action@master
+        with:
+          bump_version_scheme: patch
+          use_github_release_notes: true
+          dry_run: true
           
       - name: Login to DockerHub
         uses: docker/login-action@v2
@@ -27,22 +28,29 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: twod/docker-cups
-          tags: |
-              type=ref,event=branch
-              type=semver,pattern={{version}}
-              type=semver,pattern={{major}}.{{minor}}
-              type=raw,value=latest
-      - name: print version
-        run: echo "${{ steps.meta.outputs.tags }}"
+      # - name: Extract metadata (tags, labels) for Docker
+      #   id: meta
+      #   uses: docker/metadata-action@v4
+      #   with:
+      #     images: twod/${{ github.event.repository.name }}
+      #     tags: |
+      #         type=ref,event=branch
+      #         type=semver,pattern={{version}}
+      #         type=semver,pattern={{major}}.{{minor}}
+      #         type=raw,value=latest
+      - name: troubleshooting
+        run: |
+          echo "tag_name: ${{ steps.release.outputs.tag_name }}"
+          echo "version: ${{ steps.release.outputs.version }}"
+          echo "body: ${{ steps.release.outputs.body }}"
+
+      # - name: print Tags
+      #   run: echo "${{ steps.meta.outputs.tags }}"
+
       # - name: Build and push
       #   uses: docker/build-push-action@v3
       #   with:
       #     context: .
-      #     push: true
-      #     tags: ${{ steps.meta.outputs.tags }}
-      #     labels: ${{ steps.meta.outputs.labels }}
+      #     push: false
+      #     tags: ${{ steps.release.outputs.tags }}
+      #     labels: ${{ steps.release.outputs.labels }}
