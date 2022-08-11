@@ -1,0 +1,30 @@
+name: Scan with Trivy
+on:
+  workflow_call:
+  
+jobs:
+  build:
+    name: Scan with Trivy
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - id: string
+      uses: ASzc/change-string-case-action@v2
+      with:
+        string: ${{ github.repository }}
+        
+    - name: Build an image from Dockerfile
+      run: |
+          docker build -t docker.io/${{ steps.string.outputs.lowercase }}:${{ github.sha }} .
+          
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@0.6.2
+      with:
+        image-ref: 'docker.io/${{ steps.string.outputs.lowercase }}:${{ github.sha }}'
+        scan-type: image
+        vuln-type: os,library
+        security-checks: vuln,secret
+        severity: CRITICAL,HIGH,MEDIUM
+        exit-code: 0
