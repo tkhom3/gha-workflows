@@ -2,13 +2,16 @@ name: Pull Request Labels
 
 on:
   workflow_call:
-  
+
 jobs:
   label:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     steps:
       - uses: mheap/github-action-required-labels@v2
         with:
           mode: exactly
           count: 1
-          labels: "semver:patch, semver:minor, semver:major"
+          labels: "release/patch, release/minor, release/major"
