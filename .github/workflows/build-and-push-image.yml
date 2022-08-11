@@ -11,13 +11,13 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
     steps:
-      - name: Create Github Release
-        id: release
-        uses: rymndhng/release-on-push-action@master
-        with:
-          bump_version_scheme: patch
-          use_github_release_notes: true
-          dry_run: true
+      # - name: Create Github Release
+      #   id: release
+      #   uses: rymndhng/release-on-push-action@master
+      #   with:
+      #     bump_version_scheme: patch
+      #     use_github_release_notes: true
+      #     dry_run: true
 
       - name: Checkout code
         uses: actions/checkout@v3
@@ -28,29 +28,29 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      # - name: Extract metadata (tags, labels) for Docker
-      #   id: meta
-      #   uses: docker/metadata-action@v4
-      #   with:
-      #     images: twod/${{ github.event.repository.name }}
-      #     tags: |
-      #         type=ref,event=branch
-      #         type=semver,pattern={{version}}
-      #         type=semver,pattern={{major}}.{{minor}}
-      #         type=raw,value=latest
-      - name: troubleshooting
-        run: |
-          echo "tag_name: ${{ steps.release.outputs.tag_name }}"
-          echo "version: ${{ steps.release.outputs.version }}"
-          echo "body: ${{ steps.release.outputs.body }}"
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: twod/${{ github.event.repository.name }}
+          tags: |
+              type=ref,event=branch
+              type=semver,pattern={{version}}
+              type=semver,pattern={{major}}.{{minor}}
+              type=raw,value=latest
+      # - name: troubleshooting
+      #   run: |
+      #     echo "tag_name: ${{ steps.release.outputs.tag_name }}"
+      #     echo "version: ${{ steps.release.outputs.version }}"
+      #     echo "body: ${{ steps.release.outputs.body }}"
 
-      # - name: print Tags
-      #   run: echo "${{ steps.meta.outputs.tags }}"
+      - name: print Tags
+        run: echo "${{ steps.meta.outputs.tags }}"
 
-      # - name: Build and push
-      #   uses: docker/build-push-action@v3
-      #   with:
-      #     context: .
-      #     push: false
-      #     tags: ${{ steps.release.outputs.tags }}
-      #     labels: ${{ steps.release.outputs.labels }}
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: false
+          tags: ${{ steps.release.outputs.tags }}
+          labels: ${{ steps.release.outputs.labels }}
