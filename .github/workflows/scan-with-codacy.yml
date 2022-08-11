@@ -1,4 +1,4 @@
-name: Codacy Security Scan
+name: Scan with Codacy
 
 on:
   workflow_call:
