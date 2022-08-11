@@ -2,11 +2,6 @@ name: Build and Deploy Image
 
 on:
   workflow_call:
-    # secrets:
-    #   DOCKERHUB_USERNAME:
-    #     required: true
-    #   DOCKERHUB_PASSWORD:
-    #     required: true
 
 jobs:
   build:
@@ -16,8 +11,8 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
     steps:
-      # - name: Checkout code
-      #   uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       # - name: Create Github Release
       #   uses: rymndhng/release-on-push-action@master
@@ -32,17 +27,18 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      # - name: Extract metadata (tags, labels) for Docker
-      #   id: meta
-      #   uses: docker/metadata-action@v4
-      #   with:
-      #     images: twod/docker-cups
-      #     tags: |
-      #         type=ref,event=branch
-      #         type=semver,pattern={{version}}
-      #         type=semver,pattern={{major}}.{{minor}}
-      #         type=raw,value=latest
-              
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: twod/docker-cups
+          tags: |
+              type=ref,event=branch
+              type=semver,pattern={{version}}
+              type=semver,pattern={{major}}.{{minor}}
+              type=raw,value=latest
+      - name: print version
+        run: echo "${{ steps.meta.outputs.tags }}"
       # - name: Build and push
       #   uses: docker/build-push-action@v3
       #   with:
