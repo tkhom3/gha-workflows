@@ -58,7 +58,7 @@ jobs:
           body: |
             The new version [${{ steps.bump-semver.outputs.new_version }}](https://github.com/${{ github.repository }}/releases/tag/${{ steps.bump-semver.outputs.new_version }}) has been released :tada:
     outputs:
-      tags: ${{ steps.bump-semver.outputs.new_version }}
+      tags: ${{ steps.bump-semver.outputs.new_version/v// }}
   
   build:
     needs: create-release
@@ -77,16 +77,16 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      # - name: Extract metadata (tags, labels) for Docker
-      #   id: meta
-      #   uses: docker/metadata-action@v4
-      #   with:
-      #     images: twod/${{ github.event.repository.name }}
-      #     tags: |
-      #         type=ref,event=branch
-      #         type=semver,pattern={{version}}
-      #         type=semver,pattern={{major}}.{{minor}}
-      #         type=raw,value=latest
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: twod/${{ github.event.repository.name }}
+          tags: |
+              type=ref,event=branch
+              type=semver,pattern={{version}}
+              type=semver,pattern={{major}}.{{minor}}
+              type=raw,value=latest
 
       - name: print Tags
         run: echo ${{ needs.create-release.outputs.tags }}
@@ -96,5 +96,10 @@ jobs:
         with:
           context: .
           push: false
-          tags: ${{ steps.release.outputs.tags }}
+          tags: |
+            ${{ github.repository }}:${{ needs.create-release.outputs.tags }}
+            ${{ github.repository }}:latest
+            ${{ github.repository }}:${{ github.ref_name }}
+            ${{ github.repository }}:${{ github.sha }}
+
           labels: ${{ steps.release.outputs.labels }}
