@@ -26,4 +26,4 @@ jobs:
         scan-type: 'image,fs'
         security-checks: 'vuln,config,secret'
         severity: 'CRITICAL,HIGH,MEDIUM'
-        exit-code: '0'
+        exit-code: '1'
