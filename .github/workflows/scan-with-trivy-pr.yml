@@ -27,4 +27,4 @@ jobs:
         vuln-type: 'os,library'
         security-checks: 'vuln,config,secret'
         severity: 'CRITICAL,HIGH,MEDIUM'
-        exit-code: '0'
+        # exit-code: '0'
