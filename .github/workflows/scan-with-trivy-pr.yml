@@ -26,7 +26,8 @@ jobs:
         scan-type: image
         security-checks: vuln,secret
         severity: CRITICAL,HIGH,MEDIUM
-        exit-code: 1
+        ignore-unfixed: true
+        exit-code: 0
 
     - name: Run Trivy filesystem vulnerability scanner
       uses: aquasecurity/trivy-action@0.6.2
@@ -35,7 +36,7 @@ jobs:
         scan-type: fs
         severity: CRITICAL,HIGH,MEDIUM
         ignore-unfixed: true
-        exit-code: 1
+        exit-code: 0
 
     - name: Run Trivy IaC vulnerability scanner
       uses: aquasecurity/trivy-action@0.6.2
@@ -44,4 +45,4 @@ jobs:
         scan-type: config
         severity: CRITICAL,HIGH,MEDIUM
         ignore-unfixed: true
-        exit-code: 1
+        exit-code: 0
