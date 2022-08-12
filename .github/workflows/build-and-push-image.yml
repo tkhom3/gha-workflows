@@ -57,6 +57,9 @@ jobs:
           number: ${{ steps.get-merged-pull-request.outputs.number }}
           body: |
             The new version [${{ steps.bump-semver.outputs.new_version }}](https://github.com/${{ github.repository }}/releases/tag/${{ steps.bump-semver.outputs.new_version }}) has been released :tada:
+    outputs:
+      tags: ${{ steps.bump-semver.outputs.new_version }}
+  
   build:
     needs: create-release
     name: Build and Deploy Image
@@ -74,19 +77,19 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: twod/${{ github.event.repository.name }}
-          tags: |
-              type=ref,event=branch
-              type=semver,pattern={{version}}
-              type=semver,pattern={{major}}.{{minor}}
-              type=raw,value=latest
+      # - name: Extract metadata (tags, labels) for Docker
+      #   id: meta
+      #   uses: docker/metadata-action@v4
+      #   with:
+      #     images: twod/${{ github.event.repository.name }}
+      #     tags: |
+      #         type=ref,event=branch
+      #         type=semver,pattern={{version}}
+      #         type=semver,pattern={{major}}.{{minor}}
+      #         type=raw,value=latest
 
       - name: print Tags
-        run: echo "${{ steps.meta.outputs.tags }}"
+        run: echo ${{ needs.create-release.outputs.tags }}
 
       - name: Build and push
         uses: docker/build-push-action@v3
