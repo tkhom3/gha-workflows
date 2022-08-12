@@ -25,9 +25,9 @@ jobs:
         image-ref: 'docker.io/${{ steps.string.outputs.lowercase }}:${{ github.sha }}'
         format: 'sarif'
         output: 'trivy-results.sarif'
-        scan-type: image
+        scan-type: image,repo
         vuln-type: os,library
-        security-checks: vuln,secret
+        security-checks: vuln,config,secret
         severity: CRITICAL,HIGH,MEDIUM
         exit-code: 0
         
