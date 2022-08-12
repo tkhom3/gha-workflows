@@ -58,6 +58,7 @@ jobs:
           body: |
             The new version [${{ steps.bump-semver.outputs.new_version }}](https://github.com/${{ github.repository }}/releases/tag/${{ steps.bump-semver.outputs.new_version }}) has been released :tada:
   build:
+    needs: create-release
     name: Build and Deploy Image
     runs-on: ubuntu-20.04
     env:
