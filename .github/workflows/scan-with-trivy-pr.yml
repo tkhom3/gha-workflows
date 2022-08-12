@@ -23,8 +23,7 @@ jobs:
       uses: aquasecurity/trivy-action@0.6.2
       with:
         image-ref: 'docker.io/${{ steps.string.outputs.lowercase }}:${{ github.sha }}'
-        scan-type: 'image,repo'
-        vuln-type: 'os,library'
+        scan-type: 'image,fs'
         security-checks: 'vuln,config,secret'
         severity: 'CRITICAL,HIGH,MEDIUM'
-        # exit-code: '0'
+        exit-code: '0'
