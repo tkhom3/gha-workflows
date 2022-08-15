@@ -36,6 +36,7 @@ jobs:
       if: always()
       with:
         sarif_file: 'trivy-vuln-results.sarif'
+        category: 'Trivy Image Vulnerability'
 
     - name: Trivy Misconfiguration - IaC
       uses: aquasecurity/trivy-action@0.6.2
@@ -52,3 +53,4 @@ jobs:
       if: always()
       with:
         sarif_file: 'trivy-misconfig-results.sarif'
+        category: 'Trivy Misconfiguration'

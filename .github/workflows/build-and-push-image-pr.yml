@@ -4,8 +4,8 @@ on:
   workflow_call:
 
 jobs:
-  create-release:
-    name: Create Github Release
+  create-tag:
+    name: Create Github Tag
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
@@ -40,43 +40,27 @@ jobs:
         with:
           tag: ${{ steps.bump-semver.outputs.new_version }}
           message: "${{ steps.bump-semver.outputs.new_version }}: PR #${{ steps.get-merged-pull-request.outputs.number }} ${{ steps.get-merged-pull-request.outputs.title }}"
-
-      # - uses: actions/create-release@v1
-      #   if: ${{ steps.release-label.outputs.level == 'major' || steps.release-label.outputs.level == 'minor' || steps.release-label.outputs.level == 'patch'}}
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     tag_name: ${{ steps.bump-semver.outputs.new_version }}
-      #     release_name: ${{ steps.bump-semver.outputs.new_version }}
-      #     # body: ${{ steps.regex-match.outputs.group1 }}
-
-      - uses: softprops/action-gh-release@v1
-        if: ${{ steps.release-label.outputs.level == 'major' || steps.release-label.outputs.level == 'minor' || steps.release-label.outputs.level == 'patch'}}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          # generate_release_notes: true
-          name: ${{ steps.bump-semver.outputs.new_version }}
-
-      - uses: actions-ecosystem/action-create-comment@v1
-        if: ${{ steps.bump-semver.outputs.new_version != null }}
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          number: ${{ steps.get-merged-pull-request.outputs.number }}
-          body: |
-            The new version [${{ steps.bump-semver.outputs.new_version }}](https://github.com/${{ github.repository }}/releases/tag/${{ steps.bump-semver.outputs.new_version }}) has been released :tada:
-    
-      - name: remove v from version tag
-        run: |
-          echo ${{ steps.bump-semver.outputs.new_version }}
-          FULL_VERSION=${{ steps.bump-semver.outputs.new_version }}
-          FULL_VERSION=${FULL_VERSION//V} # Replace v with nothing
-          echo VERSION=${FULL_VERSION} >> $GITHUB_ENV # update GitHub ENV vars
-      - name: print version
-        run: echo ${{ env.VERSION }}
     outputs:
-      tags: ${{ env.VERSION }}
-  
+      new_version: ${{ steps.bump-semver.outputs.new_version }}
+
+  create-release:
+    name: Create Github Release
+    runs-on: ubuntu-20.04
+    needs: create-tag
+    steps:
+      - name: Parse semver string
+        id: semver_parser 
+        uses: booxmedialtd/ws-action-parse-semver@v1
+        with:
+          input_string: ${{ needs.create-tag.outputs.new_version }}
+          version_extractor_regex: '\/v(.*)$'
+
+      - uses: ncipollo/release-action@v1
+        if: ${{ steps.semver_parser.outputs.fullversion }}
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ steps.semver_parser.outputs.fullversion }}
+
   build:
     needs: create-release
     name: Build and Deploy Image
@@ -94,17 +78,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      # - name: Extract metadata (tags, labels) for Docker
-      #   id: meta
-      #   uses: docker/metadata-action@v4
-      #   with:
-      #     images: twod/${{ github.event.repository.name }}
-      #     tags: |
-      #         type=ref,event=branch
-      #         type=semver,pattern={{version}}
-      #         type=semver,pattern={{major}}.{{minor}}
-      #         type=raw,value=latest
-
       - name: print Tags
         run: echo ${{ needs.create-release.outputs.tags }}
 
@@ -114,9 +87,9 @@ jobs:
           context: .
           push: false
           tags: |
-            ${{ github.repository }}:${{ needs.create-release.outputs.tags }}
+            ${{ github.repository }}:${{ steps.bump-semver.outputs.new_version }}
             ${{ github.repository }}:latest
             ${{ github.repository }}:${{ github.ref_name }}
             ${{ github.repository }}:${{ github.sha }}
 
-          labels: ${{ steps.release.outputs.labels }}
+          # labels: ${{ steps.release.outputs.labels }}
