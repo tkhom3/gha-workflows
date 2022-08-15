@@ -30,7 +30,7 @@ jobs:
         exit-code: 1
         format: table
         output: trivy-results
-        trivyignores: .
+        trivyignores: '.trivyignore'
 
     - name: Post to PR
       uses: EliLillyCo/github-actions-post-to-pr@1.2
@@ -61,7 +61,7 @@ jobs:
         exit-code: 1
         format: table
         output: trivy-results
-        trivyignores: .
+        trivyignores: '.trivyignore'
 
     - name: Post to PR
       uses: EliLillyCo/github-actions-post-to-pr@1.2
