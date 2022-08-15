@@ -4,73 +4,71 @@ on:
   workflow_call:
 
 jobs:
-  create-release:
-    name: Create Github Release
+  create-tag:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions-ecosystem/action-get-merged-pull-request@v1
+      - name: Get PR Details
+        uses: actions-ecosystem/action-get-merged-pull-request@v1
         id: get-merged-pull-request
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: actions-ecosystem/action-release-label@v1
+      - name: Get release label from PR
+        uses: actions-ecosystem/action-release-label@v1
         id: release-label
         if: ${{ steps.get-merged-pull-request.outputs.title != null }}
         with:
           labels: ${{ steps.get-merged-pull-request.outputs.labels }}
 
-        # Get latest Git tag
-      - uses: actions-ecosystem/action-get-latest-tag@v1
+      - name: Get latest repo tag
+        uses: actions-ecosystem/action-get-latest-tag@v1
         id: get-latest-tag
         if: ${{ steps.release-label.outputs.level != null }}
         with:
           semver_only: true
 
-      - uses: actions-ecosystem/action-bump-semver@v1
+      - name: Bump semver based on PR label
+        uses: actions-ecosystem/action-bump-semver@v1
         id: bump-semver
         if: ${{ steps.release-label.outputs.level != null }}
         with:
           current_version: ${{ steps.get-latest-tag.outputs.tag }}
           level: ${{ steps.release-label.outputs.level }}
 
-      - uses: actions-ecosystem/action-push-tag@v1
+      - name: Push updated version as repo tag
+        uses: actions-ecosystem/action-push-tag@v1
         if: ${{ steps.bump-semver.outputs.new_version != null }}
         with:
           tag: ${{ steps.bump-semver.outputs.new_version }}
           message: "${{ steps.bump-semver.outputs.new_version }}: PR #${{ steps.get-merged-pull-request.outputs.number }} ${{ steps.get-merged-pull-request.outputs.title }}"
 
-      # - uses: actions/create-release@v1
-      #   if: ${{ steps.release-label.outputs.level == 'major' || steps.release-label.outputs.level == 'minor' || steps.release-label.outputs.level == 'patch'}}
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     tag_name: ${{ steps.bump-semver.outputs.new_version }}
-      #     release_name: ${{ steps.bump-semver.outputs.new_version }}
-      #     # body: ${{ steps.regex-match.outputs.group1 }}
-
-      - uses: softprops/action-gh-release@v1
-        if: ${{ steps.release-label.outputs.level == 'major' || steps.release-label.outputs.level == 'minor' || steps.release-label.outputs.level == 'patch'}}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Parse semver string
+        id: semver_parser 
+        uses: booxmedialtd/ws-action-parse-semver@v1
         with:
-          generate_release_notes: true
-          name: ${{ steps.bump-semver.outputs.new_version }}
+          input_string: ${{ steps.bump-semver.outputs.new_version }}
+          version_extractor_regex: 'v(.*)$'
 
-      - uses: actions-ecosystem/action-create-comment@v1
-        if: ${{ steps.bump-semver.outputs.new_version != null }}
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          number: ${{ steps.get-merged-pull-request.outputs.number }}
-          body: |
-            The new version [${{ steps.bump-semver.outputs.new_version }}](https://github.com/${{ github.repository }}/releases/tag/${{ steps.bump-semver.outputs.new_version }}) has been released :tada:
     outputs:
-      tags: ${{ steps.bump-semver.outputs.new_version/v// }}
-  
+      fullversion: ${{ steps.semver_parser.outputs.fullversion }}
+      majorversion: ${{ steps.semver_parser.outputs.major }}
+
+  create-release:
+    runs-on: ubuntu-20.04
+    needs: create-tag
+    steps:
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        if: ${{ needs.create-tag.outputs.fullversion }}
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ needs.create-tag.outputs.fullversion }}
+          generateReleaseNotes: true
+
   build:
     needs: create-release
-    name: Build and Deploy Image
     runs-on: ubuntu-20.04
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -85,29 +83,14 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      # - name: Extract metadata (tags, labels) for Docker
-      #   id: meta
-      #   uses: docker/metadata-action@v4
-      #   with:
-      #     images: twod/${{ github.event.repository.name }}
-      #     tags: |
-      #         type=ref,event=branch
-      #         type=semver,pattern={{version}}
-      #         type=semver,pattern={{major}}.{{minor}}
-      #         type=raw,value=latest
-
-      - name: print Tags
-        run: echo ${{ needs.create-release.outputs.tags }}
-
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
           context: .
           push: false
           tags: |
-            ${{ github.repository }}:${{ needs.create-release.outputs.tags }}
             ${{ github.repository }}:latest
+            ${{ github.repository }}:${{ needs.create-tag.outputs.fullversion }}
+            ${{ github.repository }}:${{ needs.create-tag.outputs.majorversion }}
             ${{ github.repository }}:${{ github.ref_name }}
             ${{ github.repository }}:${{ github.sha }}
-
-          labels: ${{ steps.release.outputs.labels }}
