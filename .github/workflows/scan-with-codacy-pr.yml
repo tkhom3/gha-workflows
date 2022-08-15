@@ -16,6 +16,7 @@ jobs:
         with:
           output: codacy-results
           format: table
+          exit-code: 1
 
       - name: Post to PR
         uses: EliLillyCo/github-actions-post-to-pr@1.2
