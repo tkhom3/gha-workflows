@@ -26,6 +26,6 @@ jobs:
             [
               {
                 "message_file": "codacy-results",
-                "title": "Codacy Image Scan Results"
+                "title": "Codacy Code Scan Results"
               }
             ]

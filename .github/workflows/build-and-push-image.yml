@@ -41,14 +41,22 @@ jobs:
           tag: ${{ steps.bump-semver.outputs.new_version }}
           message: "${{ steps.bump-semver.outputs.new_version }}: PR #${{ steps.get-merged-pull-request.outputs.number }} ${{ steps.get-merged-pull-request.outputs.title }}"
 
-      - uses: actions/create-release@v1
+      # - uses: actions/create-release@v1
+      #   if: ${{ steps.release-label.outputs.level == 'major' || steps.release-label.outputs.level == 'minor' || steps.release-label.outputs.level == 'patch'}}
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     tag_name: ${{ steps.bump-semver.outputs.new_version }}
+      #     release_name: ${{ steps.bump-semver.outputs.new_version }}
+      #     # body: ${{ steps.regex-match.outputs.group1 }}
+
+      - uses: softprops/action-gh-release@v1
         if: ${{ steps.release-label.outputs.level == 'major' || steps.release-label.outputs.level == 'minor' || steps.release-label.outputs.level == 'patch'}}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.bump-semver.outputs.new_version }}
-          release_name: ${{ steps.bump-semver.outputs.new_version }}
-          # body: ${{ steps.regex-match.outputs.group1 }}
+          generate_release_notes: true
+          name: ${{ steps.bump-semver.outputs.new_version }}
 
       - uses: actions-ecosystem/action-create-comment@v1
         if: ${{ steps.bump-semver.outputs.new_version != null }}
@@ -77,16 +85,16 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: twod/${{ github.event.repository.name }}
-          tags: |
-              type=ref,event=branch
-              type=semver,pattern={{version}}
-              type=semver,pattern={{major}}.{{minor}}
-              type=raw,value=latest
+      # - name: Extract metadata (tags, labels) for Docker
+      #   id: meta
+      #   uses: docker/metadata-action@v4
+      #   with:
+      #     images: twod/${{ github.event.repository.name }}
+      #     tags: |
+      #         type=ref,event=branch
+      #         type=semver,pattern={{version}}
+      #         type=semver,pattern={{major}}.{{minor}}
+      #         type=raw,value=latest
 
       - name: print Tags
         run: echo ${{ needs.create-release.outputs.tags }}
