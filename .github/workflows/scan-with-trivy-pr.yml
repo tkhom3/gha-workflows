@@ -3,8 +3,8 @@ on:
   workflow_call:
   
 jobs:
-  trivy-scan-image:
-    name: Scan image with Trivy
+  image:
+    name: Scan image
     runs-on: ubuntu-20.04
     steps:
     - name: Checkout code
@@ -24,7 +24,7 @@ jobs:
       with:
         image-ref: 'docker.io/${{ steps.string.outputs.lowercase }}:${{ github.sha }}'
         scan-type: image
-        security-checks: vuln,secret
+        security-checks: vuln,secret,config
         severity: CRITICAL,HIGH,MEDIUM
         ignore-unfixed: true
         exit-code: 1
@@ -44,17 +44,18 @@ jobs:
             }
           ]
 
-  trivy-scan-fs:
-    name: Scan filesystem with Trivy
+  fs:
+    name: Scan filesystem
     runs-on: ubuntu-20.04
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Run Trivy filesystem vulnerability scanner
+    - name: Trivy Misconfiguration - Filesystem
       uses: aquasecurity/trivy-action@0.6.2
       with:
         scan-type: fs
+        security-checks: vuln,secret,config
         severity: CRITICAL,HIGH,MEDIUM
         ignore-unfixed: true
         exit-code: 1
@@ -70,18 +71,18 @@ jobs:
           [
             {
               "message_file": "trivy-results",
-              "title": "Trivy Filesystem Scan Results"
+              "title": "Trivy Filesystem Misconfigurations"
             }
           ]
 
-  trivy-scan-iac:
-    name: Scan IaC with Trivy
+  iac:
+    name: Scan IaC
     runs-on: ubuntu-20.04
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Run Trivy IaC vulnerability scanner
+    - name: Trivy Misconfiguration - IaC
       uses: aquasecurity/trivy-action@0.6.2
       with:
         scan-type: config
@@ -100,6 +101,6 @@ jobs:
           [
             {
               "message_file": "trivy-results",
-              "title": "Trivy IaC Scan Results"
+              "title": "Trivy IaC Misconfigurations"
             }
           ]

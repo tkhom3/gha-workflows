@@ -15,7 +15,7 @@ jobs:
         uses: codacy/codacy-analysis-cli-action@v4.1.0
         with:
           output: codacy-results
-          format: sarif
+          format: text
 
       - name: Post to PR
         uses: EliLillyCo/github-actions-post-to-pr@1.2
