@@ -27,7 +27,7 @@ jobs:
         security-checks: vuln
         severity: CRITICAL,HIGH,MEDIUM
         ignore-unfixed: true
-        exit-code: 1
+        exit-code: 0
         format: sarif
         output: trivy-vuln-results.sarif
         
@@ -44,7 +44,7 @@ jobs:
         scan-type: config
         severity: CRITICAL,HIGH,MEDIUM
         ignore-unfixed: true
-        exit-code: 1
+        exit-code: 0
         format: sarif
         output: trivy-misconfig-results.sarif
 

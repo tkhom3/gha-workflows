@@ -87,7 +87,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          push: false
+          push: true
           tags: |
             ${{ github.repository }}:latest
             ${{ github.repository }}:${{ needs.create-tag.outputs.fullversion }}
