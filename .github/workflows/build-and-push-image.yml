@@ -68,7 +68,7 @@ jobs:
           generateReleaseNotes: true
 
   build:
-    needs: create-release
+    needs: [ create-tag, create-release ]
     runs-on: ubuntu-20.04
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
