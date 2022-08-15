@@ -39,8 +39,6 @@ jobs:
     - name: Run Trivy filesystem vulnerability scanner
       uses: aquasecurity/trivy-action@0.6.2
       with:
-        # image-ref: 'docker.io/${{ steps.string.outputs.lowercase }}:${{ github.sha }}'
-        # scan-ref: '.'
         scan-type: fs
         severity: CRITICAL,HIGH,MEDIUM
         ignore-unfixed: true
@@ -56,9 +54,22 @@ jobs:
     - name: Run Trivy IaC vulnerability scanner
       uses: aquasecurity/trivy-action@0.6.2
       with:
-        # image-ref: 'docker.io/${{ steps.string.outputs.lowercase }}:${{ github.sha }}'
-        # scan-ref: '.'
         scan-type: config
         severity: CRITICAL,HIGH,MEDIUM
         ignore-unfixed: true
         exit-code: 1
+        format: table
+        output: trivy-results
+
+    - name: Post to PR
+      uses: EliLillyCo/github-actions-post-to-pr@1.2
+      if: always()
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        post_to_pr_definition: |
+          [
+            {
+              "message_file": "trivy-results",
+              "title": "Trivy IaC Scan Results"
+            }
+          ]
