@@ -7,7 +7,7 @@ jobs:
   create-tag:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Get PR Details
         uses: actions-ecosystem/action-get-merged-pull-request@v1
