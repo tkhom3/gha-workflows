@@ -1,0 +1,16 @@
+name: Linting
+
+on:
+  workflow_call:
+
+jobs:
+  end-of-line:
+    name: Check for CRLF vs LF
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Use action to check for CRLF endings
+        uses: erclu/check-crlf@v1
