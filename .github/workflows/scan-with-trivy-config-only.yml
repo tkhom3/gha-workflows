@@ -26,3 +26,4 @@ jobs:
       if: always()
       with:
         sarif_file: trivy-misconfig-results.sarif
+        category: Trivy Misconfiguration
