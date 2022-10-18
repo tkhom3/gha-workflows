@@ -2,7 +2,7 @@ name: Scan with Trivy on PR
 on:
   workflow_call:
 
-permissions: write-all
+# permissions: write-all
 
 jobs:
   image:
@@ -60,7 +60,7 @@ jobs:
         scan-type: config
         severity: CRITICAL,HIGH,MEDIUM
         ignore-unfixed: true
-        exit-code: 1
+        exit-code: 0
         format: table
         output: trivy-results
         trivyignores: '.trivyignore'
