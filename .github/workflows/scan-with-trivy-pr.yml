@@ -2,7 +2,8 @@ name: Scan with Trivy on PR
 on:
   workflow_call:
 
-permissions: write-all
+permissions:
+  pull-requests: write
 
 jobs:
   image:
