@@ -39,7 +39,7 @@ jobs:
         category: 'Trivy Image Vulnerability'
 
     - name: Trivy Misconfiguration - IaC
-      uses: aquasecurity/trivy-action@0.7.1
+      uses: aquasecurity/trivy-action@0.8.0
       with:
         scan-type: config
         severity: CRITICAL,HIGH,MEDIUM
