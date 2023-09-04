@@ -20,7 +20,7 @@ jobs:
           docker build -t docker.io/${{ steps.string.outputs.lowercase }}:${{ github.sha }} .
           
     - name: Run Trivy vulnerability scanner
-      uses: aquasecurity/trivy-action@0.11.2
+      uses: aquasecurity/trivy-action@0.12.0
       with:
         image-ref: 'docker.io/${{ steps.string.outputs.lowercase }}:${{ github.sha }}'
         scan-type: image
@@ -39,7 +39,7 @@ jobs:
         category: 'Trivy Image Vulnerability'
 
     - name: Trivy Misconfiguration - IaC
-      uses: aquasecurity/trivy-action@0.11.2
+      uses: aquasecurity/trivy-action@0.12.0
       with:
         scan-type: config
         severity: CRITICAL,HIGH,MEDIUM
