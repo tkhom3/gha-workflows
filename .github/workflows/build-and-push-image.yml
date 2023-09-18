@@ -7,7 +7,7 @@ jobs:
   create-tag:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Get PR Details
         uses: actions-ecosystem/action-get-merged-pull-request@v1
@@ -75,7 +75,7 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Login to DockerHub
         uses: docker/login-action@v3
