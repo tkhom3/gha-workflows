@@ -27,7 +27,7 @@ jobs:
       with:
         image-ref: 'docker.io/${{ steps.string.outputs.lowercase }}:${{ github.sha }}'
         scan-type: image
-        scanners: vuln,secret,misconfig
+        scanners: vuln,secret,config
         severity: CRITICAL,HIGH,MEDIUM
         ignore-unfixed: true
         exit-code: 1
@@ -58,7 +58,7 @@ jobs:
     - name: Trivy Misconfiguration - IaC
       uses: aquasecurity/trivy-action@0.16.0
       with:
-        scan-type: misconfig
+        scan-type: config
         severity: CRITICAL,HIGH,MEDIUM
         ignore-unfixed: true
         exit-code: 1
