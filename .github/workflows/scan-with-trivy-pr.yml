@@ -27,7 +27,7 @@ jobs:
       with:
         image-ref: 'docker.io/${{ steps.string.outputs.lowercase }}:${{ github.sha }}'
         scan-type: image
-        security-checks: vuln,secret,config
+        scanners: vuln,secret,config
         severity: CRITICAL,HIGH,MEDIUM
         ignore-unfixed: true
         exit-code: 1
