@@ -54,3 +54,18 @@ jobs:
       with:
         sarif_file: 'trivy-misconfig-results.sarif'
         category: 'Trivy Misconfiguration'
+  sbom:
+    name: Generate SBOM
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Run Trivy in GitHub SBOM mode and submit results to Dependency Graph
+      uses: aquasecurity/trivy-action@0.16.0
+      with:
+        scan-type: 'fs'
+        format: 'github'
+        output: 'dependency-results.sbom.json'
+        image-ref: '.'
+        github-pat: ${{ secrets.GITHUB_TOKEN }}
