@@ -32,7 +32,7 @@ jobs:
         post_to_pr_definition: |
           [
             {
-              "message_file": "trivy-results",
+              "message_file": "./trivy-results",
               "title": "Trivy IaC Misconfigurations"
             }
           ]
