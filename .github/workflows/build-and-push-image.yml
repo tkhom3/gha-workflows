@@ -56,7 +56,7 @@ jobs:
       majorversion: ${{ steps.semver_parser.outputs.major }}
 
   create-release:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs: create-tag
     steps:
       - name: Create Release
