@@ -3,94 +3,39 @@ name: Create Release, Build and Deploy Image
 on:
   workflow_call:
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
-  create-tag:
+  release-please:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Get PR Details
-        uses: actions-ecosystem/action-get-merged-pull-request@v1
-        id: get-merged-pull-request
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Get release label from PR
-        uses: actions-ecosystem/action-release-label@v1
-        id: release-label
-        if: ${{ steps.get-merged-pull-request.outputs.title != null }}
-        with:
-          labels: ${{ steps.get-merged-pull-request.outputs.labels }}
-
-      - name: Get latest repo tag
-        uses: actions-ecosystem/action-get-latest-tag@v1
-        id: get-latest-tag
-        if: ${{ steps.release-label.outputs.level != null }}
-        with:
-          semver_only: true
-
-      - name: Bump semver based on PR label
-        uses: actions-ecosystem/action-bump-semver@v1
-        id: bump-semver
-        if: ${{ steps.release-label.outputs.level != null }}
-        with:
-          current_version: ${{ steps.get-latest-tag.outputs.tag }}
-          level: ${{ steps.release-label.outputs.level }}
-
-      - name: Push updated version as repo tag
-        uses: actions-ecosystem/action-push-tag@v1
-        if: ${{ steps.bump-semver.outputs.new_version != null }}
-        with:
-          tag: ${{ steps.bump-semver.outputs.new_version }}
-          message: "${{ steps.bump-semver.outputs.new_version }}: PR #${{ steps.get-merged-pull-request.outputs.number }} ${{ steps.get-merged-pull-request.outputs.title }}"
-
-      - name: Parse semver string
-        id: semver_parser 
-        uses: booxmedialtd/ws-action-parse-semver@v1
-        with:
-          input_string: ${{ steps.bump-semver.outputs.new_version }}
-          version_extractor_regex: 'v(.*)$'
-
-    outputs:
-      fullversion: ${{ steps.semver_parser.outputs.fullversion }}
-      majorversion: ${{ steps.semver_parser.outputs.major }}
-
-  create-release:
-    runs-on: ubuntu-latest
-    needs: create-tag
-    steps:
-      - name: Create Release
-        uses: ncipollo/release-action@v1
-        if: ${{ needs.create-tag.outputs.fullversion }}
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ needs.create-tag.outputs.fullversion }}
-          generateReleaseNotes: true
-
-  build:
-    needs: [ create-tag, create-release ]
-    runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          release-type: simple
+
       - name: Login to DockerHub
+        if: ${{ steps.release.outputs.release_created }}
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Build and push
+        if: ${{ steps.release.outputs.release_created }}
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
           tags: |
             ${{ github.repository }}:latest
-            ${{ github.repository }}:${{ needs.create-tag.outputs.fullversion }}
-            ${{ github.repository }}:${{ needs.create-tag.outputs.majorversion }}
+            ${{ github.repository }}:${{ steps.release.outputs.version }}
+            ${{ github.repository }}:${{ steps.release.outputs.major }}
             ${{ github.repository }}:${{ github.ref_name }}
             ${{ github.repository }}:${{ github.sha }}
