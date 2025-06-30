@@ -1,4 +1,4 @@
-name: Release auto-merge
+name: auto-merge-pr
 
 on:
   workflow_call:
@@ -10,7 +10,7 @@ permissions:
 jobs:
   dependabot:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.user.login == 'github-actions'
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
     steps:
       - name: Dependabot metadata
         id: metadata
