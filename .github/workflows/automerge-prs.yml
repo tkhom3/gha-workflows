@@ -21,7 +21,7 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
   release:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.user.login == 'github-actions[bot]' && github.repository_owner == 'tkhom3'
+    if: github.event.pull_request.user.login == 'github-actions' && github.repository_owner == 'tkhom3'
     steps:
       - name: Enable auto-merge for Release PRs
         run: gh pr merge --auto --merge "${{github.event.pull_request.html_url}}"
