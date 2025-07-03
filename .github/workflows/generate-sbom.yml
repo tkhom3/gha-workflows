@@ -1,9 +1,12 @@
 name: Generate SBOM
+
 on:
   workflow_call:
-  
-jobs:
 
+permissions:
+  contents: write
+
+jobs:
   sbom:
     name: Generate SBOM
     runs-on: ubuntu-latest
