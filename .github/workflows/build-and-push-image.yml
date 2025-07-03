@@ -19,7 +19,6 @@ jobs:
         id: release
         with:
           release-type: simple
-          skip-github-pull-request: true
 
       - name: Login to DockerHub
         if: ${{ steps.release.outputs.release_created }}
