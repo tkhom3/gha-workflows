@@ -3,21 +3,14 @@
 ---
 name: MegaLinter
 
-on:
-  workflow_call:
-    inputs:
-      ml_flavor:
-        description: 'MegaLinter image to use'
-        required: true
-        type: string
+on: # yamllint disable-line rule:truthy - false positive
+  pull_request:
+    branches:
+      - main
 
 env:
-  APPLY_FIXES: all
   APPLY_FIXES_EVENT: pull_request
   APPLY_FIXES_MODE: commit
-  ML_FLAVOR: ${{ inputs.ml_flavor || 'megalinter/megalinter-action@v7' }}
-
-
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: true
@@ -43,7 +36,7 @@ jobs:
           fetch-depth: 0
 
       - name: MegaLinter
-        uses: ${{ env.ML_FLAVOR }}
+        uses: oxsecurity/megalinter/flavors/ci_light@v8.8.0
         id: ml
         env:
           VALIDATE_ALL_CODEBASE: >-
@@ -63,6 +56,7 @@ jobs:
           path: |
             megalinter-reports
             mega-linter.log
+
       - name: Set APPLY_FIXES_IF var
         run: |
           printf 'APPLY_FIXES_IF=%s\n' "${{
