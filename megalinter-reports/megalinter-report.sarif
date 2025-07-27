@@ -1322,7 +1322,7 @@
             "tool": {
                 "driver": {
                     "informationUri": "https://github.com/anchore/grype",
-                    "name": "grype (MegaLinter REPOSITORY_GRYPE) (MegaLinter REPOSITORY_GRYPE) (MegaLinter REPOSITORY_GRYPE) (MegaLinter REPOSITORY_GRYPE) (MegaLinter REPOSITORY_GRYPE) (MegaLinter REPOSITORY_GRYPE) (MegaLinter REPOSITORY_GRYPE) (MegaLinter REPOSITORY_GRYPE) (MegaLinter REPOSITORY_GRYPE)",
+                    "name": "grype (MegaLinter REPOSITORY_GRYPE) (MegaLinter REPOSITORY_GRYPE) (MegaLinter REPOSITORY_GRYPE) (MegaLinter REPOSITORY_GRYPE) (MegaLinter REPOSITORY_GRYPE) (MegaLinter REPOSITORY_GRYPE) (MegaLinter REPOSITORY_GRYPE) (MegaLinter REPOSITORY_GRYPE) (MegaLinter REPOSITORY_GRYPE) (MegaLinter REPOSITORY_GRYPE)",
                     "version": "0.94.0"
                 }
             }
@@ -1340,7 +1340,7 @@
             "tool": {
                 "driver": {
                     "informationUri": "https://github.com/secretlint/secretlint",
-                    "name": "secretlint (MegaLinter REPOSITORY_SECRETLINT) (MegaLinter REPOSITORY_SECRETLINT) (MegaLinter REPOSITORY_SECRETLINT) (MegaLinter REPOSITORY_SECRETLINT) (MegaLinter REPOSITORY_SECRETLINT) (MegaLinter REPOSITORY_SECRETLINT) (MegaLinter REPOSITORY_SECRETLINT) (MegaLinter REPOSITORY_SECRETLINT) (MegaLinter REPOSITORY_SECRETLINT)",
+                    "name": "secretlint (MegaLinter REPOSITORY_SECRETLINT) (MegaLinter REPOSITORY_SECRETLINT) (MegaLinter REPOSITORY_SECRETLINT) (MegaLinter REPOSITORY_SECRETLINT) (MegaLinter REPOSITORY_SECRETLINT) (MegaLinter REPOSITORY_SECRETLINT) (MegaLinter REPOSITORY_SECRETLINT) (MegaLinter REPOSITORY_SECRETLINT) (MegaLinter REPOSITORY_SECRETLINT) (MegaLinter REPOSITORY_SECRETLINT)",
                     "rules": [],
                     "version": "1.0.0"
                 }
@@ -2946,12 +2946,12 @@
                         "dependencies": [
                             {
                                 "dependsOn": [],
-                                "ref": "ced8ce53-417e-4402-a2ee-b0e208f81ca5"
+                                "ref": "5f03ec10-e54b-49fa-96b2-895942bbb688"
                             }
                         ],
                         "metadata": {
                             "component": {
-                                "bom-ref": "ced8ce53-417e-4402-a2ee-b0e208f81ca5",
+                                "bom-ref": "5f03ec10-e54b-49fa-96b2-895942bbb688",
                                 "name": ".",
                                 "properties": [
                                     {
@@ -2961,7 +2961,7 @@
                                 ],
                                 "type": "application"
                             },
-                            "timestamp": "2025-07-27T16:06:20+00:00",
+                            "timestamp": "2025-07-27T16:07:49+00:00",
                             "tools": {
                                 "components": [
                                     {
@@ -2973,7 +2973,7 @@
                                 ]
                             }
                         },
-                        "serialNumber": "urn:uuid:2f0d530b-8827-4cde-94e4-73832c2598c0",
+                        "serialNumber": "urn:uuid:57fd8c89-6235-411a-bfb3-cf5962458449",
                         "specVersion": "1.6",
                         "version": 1,
                         "vulnerabilities": []
