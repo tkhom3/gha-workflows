@@ -215,5 +215,3 @@ Processing linters on [4] parallel cores… (can be decreased with variable PARA
 +---------------+------------+---------------+-------+-------+--------+----------+--------------+
 
 [JSON Reporter] Generated JSON report: /github/workspace/megalinter-reports/mega-linter-report.json
-[Updated Sources Reporter] copied 3 fixed source files in folder /github/workspace/megalinter-reports/updated_sources.
-[32m✅ Successfully linted all files without errors[0m
