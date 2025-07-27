@@ -1322,7 +1322,7 @@
             "tool": {
                 "driver": {
                     "informationUri": "https://github.com/anchore/grype",
-                    "name": "grype (MegaLinter REPOSITORY_GRYPE) (MegaLinter REPOSITORY_GRYPE) (MegaLinter REPOSITORY_GRYPE)",
+                    "name": "grype (MegaLinter REPOSITORY_GRYPE) (MegaLinter REPOSITORY_GRYPE) (MegaLinter REPOSITORY_GRYPE) (MegaLinter REPOSITORY_GRYPE)",
                     "version": "0.94.0"
                 }
             }
@@ -1340,7 +1340,7 @@
             "tool": {
                 "driver": {
                     "informationUri": "https://github.com/secretlint/secretlint",
-                    "name": "secretlint (MegaLinter REPOSITORY_SECRETLINT) (MegaLinter REPOSITORY_SECRETLINT) (MegaLinter REPOSITORY_SECRETLINT)",
+                    "name": "secretlint (MegaLinter REPOSITORY_SECRETLINT) (MegaLinter REPOSITORY_SECRETLINT) (MegaLinter REPOSITORY_SECRETLINT) (MegaLinter REPOSITORY_SECRETLINT)",
                     "rules": [],
                     "version": "1.0.0"
                 }
@@ -2946,12 +2946,12 @@
                         "dependencies": [
                             {
                                 "dependsOn": [],
-                                "ref": "ab3c694d-c3e8-4b5f-b3f0-05fd0bb45952"
+                                "ref": "a2d79f60-4d8f-4ec2-8f7b-f249bcadefc1"
                             }
                         ],
                         "metadata": {
                             "component": {
-                                "bom-ref": "ab3c694d-c3e8-4b5f-b3f0-05fd0bb45952",
+                                "bom-ref": "a2d79f60-4d8f-4ec2-8f7b-f249bcadefc1",
                                 "name": ".",
                                 "properties": [
                                     {
@@ -2961,7 +2961,7 @@
                                 ],
                                 "type": "application"
                             },
-                            "timestamp": "2025-07-27T15:57:21+00:00",
+                            "timestamp": "2025-07-27T15:58:49+00:00",
                             "tools": {
                                 "components": [
                                     {
@@ -2973,7 +2973,7 @@
                                 ]
                             }
                         },
-                        "serialNumber": "urn:uuid:399c3ac4-e013-479f-8e3c-83ab9ae009c7",
+                        "serialNumber": "urn:uuid:f5107a1d-d098-4031-9c56-4d4fe9105407",
                         "specVersion": "1.6",
                         "version": 1,
                         "vulnerabilities": []
