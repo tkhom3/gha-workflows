@@ -1,0 +1,14 @@
+[0000]  WARN no explicit name and version provided for directory source, deriving artifact ID from the given path (which is not ideal)
+NAME                                                      VERSION  TYPE                                    
+actions/checkout                                          v4       github-action           (+4 duplicates)  
+actions/upload-artifact                                   v4       github-action                            
+aquasecurity/trivy-action                                 0.32.0   github-action                            
+dependabot/fetch-metadata                                 v2       github-action                            
+docker/build-push-action                                  v6       github-action           (+1 duplicate)   
+docker/login-action                                       v3       github-action                            
+erclu/check-crlf                                          v1       github-action                            
+googleapis/release-please-action                          v4       github-action                            
+oxsecurity/megalinter/flavors/ci_light                    v8.8.0   github-action                            
+peter-evans/create-pull-request                           v7       github-action                            
+stefanzweifel/git-auto-commit-action                      v6       github-action                            
+tkhom3/gha-workflows/.github/workflows/automerge-prs.yml  main     github-action-workflow
