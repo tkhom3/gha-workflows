@@ -1322,7 +1322,7 @@
             "tool": {
                 "driver": {
                     "informationUri": "https://github.com/anchore/grype",
-                    "name": "grype (MegaLinter REPOSITORY_GRYPE)",
+                    "name": "grype (MegaLinter REPOSITORY_GRYPE) (MegaLinter REPOSITORY_GRYPE)",
                     "version": "0.94.0"
                 }
             }
@@ -1340,7 +1340,7 @@
             "tool": {
                 "driver": {
                     "informationUri": "https://github.com/secretlint/secretlint",
-                    "name": "secretlint (MegaLinter REPOSITORY_SECRETLINT)",
+                    "name": "secretlint (MegaLinter REPOSITORY_SECRETLINT) (MegaLinter REPOSITORY_SECRETLINT)",
                     "rules": [],
                     "version": "1.0.0"
                 }
@@ -2946,12 +2946,12 @@
                         "dependencies": [
                             {
                                 "dependsOn": [],
-                                "ref": "8c993720-ea13-4c20-aea4-fbb6c3513222"
+                                "ref": "17a52207-5ab4-40fd-acc3-2666b653a3ab"
                             }
                         ],
                         "metadata": {
                             "component": {
-                                "bom-ref": "8c993720-ea13-4c20-aea4-fbb6c3513222",
+                                "bom-ref": "17a52207-5ab4-40fd-acc3-2666b653a3ab",
                                 "name": ".",
                                 "properties": [
                                     {
@@ -2961,7 +2961,7 @@
                                 ],
                                 "type": "application"
                             },
-                            "timestamp": "2025-07-27T15:54:29+00:00",
+                            "timestamp": "2025-07-27T15:55:52+00:00",
                             "tools": {
                                 "components": [
                                     {
@@ -2973,7 +2973,7 @@
                                 ]
                             }
                         },
-                        "serialNumber": "urn:uuid:b03164fd-d2b0-4ecf-af42-6c71847659d7",
+                        "serialNumber": "urn:uuid:21d34e55-2d30-4053-802e-b1019e24239f",
                         "specVersion": "1.6",
                         "version": 1,
                         "vulnerabilities": []
