@@ -19,6 +19,7 @@ jobs:
         id: release
         with:
           release-type: simple
+          token: ${{ secrets.GHA_PAT }}
 
       - name: Login to DockerHub
         if: ${{ steps.release.outputs.release_created }}
