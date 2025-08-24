@@ -18,7 +18,7 @@ jobs:
       - name: Enable auto-merge for Dependabot PRs
         run: gh pr merge --auto --merge "${{github.event.pull_request.html_url}}"
         env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          GITHUB_TOKEN: ${{ secrets.GHA_PAT || secrets.GITHUB_TOKEN }}
   release:
     runs-on: ubuntu-latest
     if: github.event.pull_request.user.login == 'Kieffer87' && github.repository_owner == 'tkhom3'
@@ -26,4 +26,4 @@ jobs:
       - name: Enable auto-merge for Release PRs
         run: gh pr merge --auto --merge "${{github.event.pull_request.html_url}}"
         env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          GITHUB_TOKEN: ${{ secrets.GHA_PAT || secrets.GITHUB_TOKEN }}
