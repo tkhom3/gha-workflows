@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: Run Trivy in GitHub SBOM mode and submit results to Dependency Graph
       uses: aquasecurity/trivy-action@0.32.0
@@ -21,4 +21,4 @@ jobs:
         format: 'github'
         output: 'dependency-results.sbom.json'
         image-ref: '.'
-        github-pat: ${{ secrets.GITHUB_TOKEN }}
+        github-pat: ${{ secrets.GHA_PAT || secrets.GITHUB_TOKEN }}
