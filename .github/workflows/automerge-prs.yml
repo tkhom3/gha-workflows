@@ -19,7 +19,7 @@ jobs:
         run: gh pr merge --auto --merge "${{github.event.pull_request.html_url}}"
         env:
           GITHUB_TOKEN: ${{ secrets.GHA_PAT || secrets.GITHUB_TOKEN }}
-  release:
+  kieffer87:
     runs-on: ubuntu-latest
     if: github.event.pull_request.user.login == 'Kieffer87' && github.repository_owner == 'tkhom3'
     steps:
