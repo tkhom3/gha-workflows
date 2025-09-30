@@ -31,13 +31,13 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # actions/checkout@v5
         with:
           token: ${{ secrets.GHA_PAT || secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
       - name: MegaLinter
-        uses: oxsecurity/megalinter/flavors/ci_light@v9.0.1
+        uses: oxsecurity/megalinter/flavors/ci_light@0dcbedd66ea456ba2d54fd350affaa15df8a0da3 # oxsecurity/megalinter/flavors/ci_light@v9.0.1
         id: ml
         env:
           VALIDATE_ALL_CODEBASE: >-
@@ -50,7 +50,7 @@ jobs:
 
       - name: Archive production artifacts
         if: success() || failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # actions/upload-artifact@v4
         with:
           name: MegaLinter reports
           include-hidden-files: "true"
@@ -88,7 +88,7 @@ jobs:
       # Create pull request if applicable
       # (for now works only on PR from same repository, not from forks)
       - name: Create Pull Request with applied fixes
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # peter-evans/create-pull-request@v7
         id: cpr
         if: env.APPLY_FIXES_IF_PR == 'true'
         with:
@@ -110,7 +110,7 @@ jobs:
         run: sudo chown -Rc $UID .git/
 
       - name: Commit and push applied linter fixes
-        uses: stefanzweifel/git-auto-commit-action@v6
+        uses: stefanzweifel/git-auto-commit-action@778341af668090896ca464160c2def5d1d1a3eb0 # stefanzweifel/git-auto-commit-action@v6
         if: env.APPLY_FIXES_IF_COMMIT == 'true'
         with:
           branch: >-
@@ -125,6 +125,6 @@ jobs:
 
       - name: Upload MegaLinter scan results to GitHub Security tab
         if: success() || failure()
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@3599b3baa15b485a2e49ef411a7a4bb2452e7f93 # github/codeql-action/upload-sarif@v3
         with:
           sarif_file: "megalinter-reports/megalinter-report.sarif"
