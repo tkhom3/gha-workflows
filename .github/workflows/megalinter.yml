@@ -48,16 +48,6 @@ jobs:
 
           GITHUB_TOKEN: ${{ secrets.GHA_PAT }}
 
-      - name: Archive production artifacts
-        if: success() || failure()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # actions/upload-artifact@v4
-        with:
-          name: MegaLinter reports
-          include-hidden-files: "true"
-          path: |
-            megalinter-reports
-            mega-linter.log
-
       - name: Set APPLY_FIXES_IF var
         run: |
           printf 'APPLY_FIXES_IF=%s\n' "${{
@@ -122,9 +112,3 @@ jobs:
           commit_message: "[MegaLinter] Apply linters fixes"
           commit_user_name: megalinter-bot
           commit_user_email: 129584137+megalinter-bot@users.noreply.github.com
-
-      - name: Upload MegaLinter scan results to GitHub Security tab
-        if: success() || failure()
-        uses: github/codeql-action/upload-sarif@3599b3baa15b485a2e49ef411a7a4bb2452e7f93 # github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: "megalinter-reports/megalinter-report.sarif"
