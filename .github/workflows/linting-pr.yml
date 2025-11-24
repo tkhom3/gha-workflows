@@ -10,7 +10,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v5
 
       - name: Use action to check for CRLF endings
         uses: erclu/check-crlf@94acb86c2a41b0a46bd8087b63a06f0457dd0c6c # v1
