@@ -46,8 +46,8 @@ jobs:
           retention-days: 7
       - name: Release
         id: semantic
-        # env:
-        #   GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_PAT }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           OUTPUT=$(npx semantic-release  2>&1 | tee /dev/stderr)
           VERSION=$(echo "$OUTPUT" | grep -oP 'Published release \K[0-9]+\.[0-9]+\.[0-9]+' || true)
