@@ -35,7 +35,7 @@ jobs:
           path: ./workflow-repo
       - name: Install dependencies
         run: |
-          cd workflow-repo && npm ci --fund=false
+          (cd workflow-repo && npm ci --fund=false)
           npm install --no-save --fund=false $(jq -r '.dependencies | keys[]' ./workflow-repo/package.json | tr '\n' ' ')
       - name: Upload npm debug logs on failure
         if: failure()
