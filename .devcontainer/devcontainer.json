@@ -2,7 +2,9 @@
   "name": "Lawncare Dashboard",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
   "features": {
-    "ghcr.io/devcontainers/features/node:1": { "version": "lts/*" },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "lts/*"
+    },
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
   "customizations": {
@@ -14,6 +16,14 @@
       ],
       "settings": {
         "editor.formatOnSave": true
+      },
+      "mcp": {
+        "servers": {
+          "github": {
+            "type": "http",
+            "url": "https://api.githubcopilot.com/mcp/"
+          }
+        }
       }
     }
   }
