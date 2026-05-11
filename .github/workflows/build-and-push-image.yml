@@ -35,14 +35,14 @@ jobs:
           path: ./workflow-repo
       - name: Install dependencies
         run: |
-          npm ci
-          npm install --no-save $(jq -r '.dependencies | keys[]' ./workflow-repo/package.json | tr '\n' ' ')
+          cd workflow-repo && npm ci --fund=false
+          npm install --no-save --fund=false $(jq -r '.dependencies | keys[]' ./workflow-repo/package.json | tr '\n' ' ')
       - name: Upload npm debug logs on failure
         if: failure()
         uses: actions/upload-artifact@v7
         with:
           name: npm-logs
-          path: /root/.npm/_logs/
+          path: /home/runner/.npm/_logs/
           retention-days: 7
       - name: Release
         id: semantic
