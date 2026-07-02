@@ -2,7 +2,6 @@
 # package ecosystems to update and where the package manifests are located.
 # Please see the documentation for all configuration options:
 # https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
-
 version: 2
 updates:
   - package-ecosystem: "github-actions"
@@ -12,6 +11,11 @@ updates:
     open-pull-requests-limit: 10
     commit-message:
       prefix: "fix: "
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
@@ -19,3 +23,7 @@ updates:
     open-pull-requests-limit: 10
     commit-message:
       prefix: "fix: "
+    groups:
+      npm-dependencies:
+        patterns:
+          - "*"
